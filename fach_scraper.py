@@ -1,5 +1,6 @@
 # fach_scraper.py
 
+import time
 import requests
 import json
 from bs4 import BeautifulSoup
@@ -45,8 +46,8 @@ def scrap_fach_data():
                 soup = BeautifulSoup(response.text, 'html.parser')
 
                 # Search for the iframe tag because the availability is in the content of the iframe
-                iframe = soup.find('iframe')
-
+                iframe = soup.find('iframe', class_='reservation')
+    
                 if iframe:
                     # Get the URL of the iframe
                     iframe_url = iframe['src']
@@ -97,6 +98,7 @@ def scrap_fach_data():
             json.dump(available_residences, json_file, ensure_ascii=False, indent=2)
         print(f"Résidence disponibles immédiatement: {immediate_count}")
         print(f"Résidence disponibles prochainement: {upcoming_count}")
+        return available_residences
 
 if __name__ == "__main__":
     scrap_fach_data()
