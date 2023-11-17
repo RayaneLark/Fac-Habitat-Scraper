@@ -17,7 +17,7 @@ def scrap_fach_data():
         data = response.json()
 
         # Step 2: Filter residences located in Île-de-France and managed by Fac-Habitat
-        idf_deps = {'75', '78', '91', '92', '93', '94', '95'}
+        idf_deps = {'75', '78', '91', '92', '93', '94', '95', '77'}
 
         residences_idf = [value for value in data.values() if value.get('cp')[:2] in idf_deps and value.get('gestionnaire') == 'FACH']
 
@@ -47,7 +47,7 @@ def scrap_fach_data():
 
                 # Search for the iframe tag because the availability is in the content of the iframe
                 iframe = soup.find('iframe', class_='reservation')
-    
+
                 if iframe:
                     # Get the URL of the iframe
                     iframe_url = iframe['src']
@@ -63,6 +63,7 @@ def scrap_fach_data():
                         availability = "Aucune disponibilité"
                         for string in ["Disponibilité à venir", "Disponibilité immédiate"]:
                             if string in iframe_soup.get_text():
+                                price = soup.find('em', itemprop='lowPrice').find('strong').text
                                 availability = string
                                 if string == "Disponibilité immédiate":
                                     immediate_count += 1
@@ -77,7 +78,8 @@ def scrap_fach_data():
                                     "titre": residences_idf[urls.index(url)].get("titre_fr"),
                                     "email": residences_idf[urls.index(url)].get("email"),
                                     "tel": residences_idf[urls.index(url)].get("tel"),
-                                    "available": availability
+                                    "available": availability,
+                                    "prix": price
                                 }
                                 available_residences.append(residence_info)
 
