@@ -19,11 +19,11 @@ cd fac-habitat-scraper
 ```
 2.1. To execute the script once, run the script:
 ```python
-python fach_scraper.py
+python3 fach_scraper.py
 ```
 2.2. To schedule automatic execution of the script at regular intervals, you can use the provided scheduler.py script. This script uses the schedule library to run the scraping job every 30 minutes.
 ```python
-python scheduler.py
+python3 scheduler.py
 ```
 
 
